@@ -11,6 +11,7 @@ public class Camera : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = target.position + offset;
+        //transform.position = target.position + offset;
+        transform.LookAt(new Vector3(target.position.x, target.position.y, target.position.z));
     }
 }
