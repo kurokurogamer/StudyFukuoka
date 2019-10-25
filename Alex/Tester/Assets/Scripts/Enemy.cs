@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
 
     public Transform playerTransform;
     private NavMeshAgent agent;
+    [HideInInspector]
+    public EnemySpawner es;
     private Rigidbody rb;
 
     // Start is called before the first frame update
