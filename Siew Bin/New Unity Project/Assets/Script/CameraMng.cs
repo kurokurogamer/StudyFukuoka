@@ -80,10 +80,6 @@ public class CameraMng : MonoBehaviour
 
         this.GetComponent<Camera>().cullingMask = 0xffffff;
 
-        //float horizontal = Input.GetAxis("Mouse X") * 5;
-        //player.transform.Rotate(0, horizontal, 0);
-        //float desiredAngle = player.transform.eulerAngles.y;
-        //Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
         dist =  Quaternion.AngleAxis(Input.GetAxis("Mouse X") * 4.0f, Vector3.up) * dist;
 
         transform.position = player.transform.position + dist;
