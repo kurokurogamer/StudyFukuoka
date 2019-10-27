@@ -8,6 +8,9 @@ public class EnemySpawner : MonoBehaviour
     public Transform playerTransform;
     public Transform[] spawnPoints;
 
+    [SerializeField]
+    private GameObject _enemyContainer;
+
     public float spawnInterval = 5;     // 生成間隔 ( 秒 )
     private float nextSpawnTime = 0;    // 次の生成時間を格納する変数
 
@@ -26,8 +29,9 @@ public class EnemySpawner : MonoBehaviour
 
             // 敵の生成
             Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            GameObject enemy = Instantiate(enemyPrefab, randomPoint.position, Quaternion.identity);
-            Enemy npc = enemy.GetComponent<Enemy>();
+            GameObject newEnemy = Instantiate(enemyPrefab, randomPoint.position, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            Enemy npc = newEnemy.GetComponent<Enemy>();
             npc.playerTransform = playerTransform;
             npc.es = this;
         }

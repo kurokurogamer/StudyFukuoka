@@ -18,15 +18,23 @@ public class Gun : MonoBehaviour
     public float reloadTime = 1f;
     private bool isReloading = false;
 
+    [SerializeField]
+    private float recoil = 0;
+    [SerializeField]
+    private float recoilForce = 0.3f;
+
     private float nextTimeToFire = 0f;
     private bool inputType;
 
     public Animator animator;
 
+    private Vector3 defaultPosition;
+
     void Start()
     {
         muzzleFlash = transform.Find("muzzleFlash").GetComponent<ParticleSystem>();
         currentAmmo = maxAmmo;
+        defaultPosition = transform.position;
     }
 
     void OnEnable()
@@ -65,10 +73,17 @@ public class Gun : MonoBehaviour
                 Shoot();
             }
         }
+
+        Vector3 RecoilPosition = new Vector3(defaultPosition.x, defaultPosition.y, defaultPosition.z - 0.5f);
+
+        transform.position = Vector3.Lerp(defaultPosition, RecoilPosition, recoil);
+        recoil -= Time.deltaTime;
+        recoil = Mathf.Clamp(recoil, 0, 1f);
     }
 
     void Shoot()
     {
+        recoil += recoilForce;
         muzzleFlash.Play();
         currentAmmo--;
 
