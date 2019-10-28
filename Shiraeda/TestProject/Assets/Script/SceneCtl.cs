@@ -5,8 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class SceneCtl : MonoBehaviour
 {
+    public enum SCENE
+    {
+        TITEL,
+        GAME,
+        RESULT,
+        SAMPLE,
+        MAX
+    }
     private static SceneCtl instance = null;
-    string _sceneName = "";
+    string _sceneName;
     public static SceneCtl Instance
     {
         get
@@ -35,12 +43,39 @@ public class SceneCtl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // アクティブなシーンの名前を取得する
+        _sceneName = SceneManager.GetActiveScene().name;
     }
 
     public void MoveScene()
     {
+        SceneManager.LoadScene("GameScene");
+    }
 
+    public void MoveScene(SCENE type)
+    {
+        switch (type)
+        {
+            case SCENE.TITEL:
+                _sceneName = "TitleScene";
+                break;
+            case SCENE.GAME:
+                _sceneName = "GameScene";
+                break;
+            case SCENE.RESULT:
+                _sceneName = "ResultScene";
+                break;
+            case SCENE.SAMPLE:
+                _sceneName = "SampleScene";
+                break;
+            case SCENE.MAX:
+            default:
+                _sceneName = "";
+                break;
+        }
+        SceneManager.LoadScene(_sceneName);
+        /// 使い方
+        ///SceneCtl.Instance.MoveScene(SceneCtl.SCENE.GAME);
     }
 
     private void CheckScene()
