@@ -10,10 +10,15 @@ public class PlayerMng : MonoBehaviour
     public new CameraMng camera;
     Rigidbody rb;
     bool IsMoving = false;
+    [SerializeField]
+    private LineRenderer lineR;
+    private RaycastHit sightLine;
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        lineR = GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
         distToGround = GetComponent<Collider>().bounds.extents.y;
     }
@@ -131,6 +136,11 @@ public class PlayerMng : MonoBehaviour
         {
             transform.localPosition += transform.TransformDirection(0.0f, 0.0f, 0.1f);
         }
+        //lineR.SetPosition(0, transform.position);
+        //if(Physics.Raycast(transform.position,transform.forward,out sightLine,Mathf.Infinity))
+        //{
+        //    lineR.SetPosition(1, sightLine.point);
+        //}
     }
 
     void SetSpeed(float val)
