@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class TestButton : MonoBehaviour
 {
-    Effect effect;
+    private Effect effect;
+    private Sound _sound;
     // Start is called before the first frame update
     void Start()
     {
         effect = GetComponent<Effect>();
+        _sound = GetComponent<Sound>();
     }
 
     // Update is called once per frame
@@ -16,15 +18,46 @@ public class TestButton : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            effect.CreatePool(0, transform.position, transform.rotation, true, true);
+            // パーティクル生成(コピー)
+            effect.Create(0, transform.position);
         }
-        else if(Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.X))
         {
+            // パーティクル生成(使いまわし)
+            effect.CreatePool(0, transform.position);
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            // パーティクル再生
             effect.Play(0);
         }
-        else if(Input.GetKeyDown(KeyCode.Y))
+        else if (Input.GetKeyDown(KeyCode.V))
         {
+            // パーティクル停止
             effect.Stop(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            // BGM再生
+            AudioManager.Instance.PlayBGM(_sound.ClipList[0]);
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            // SE再生
+            AudioManager.Instance.PlaySE(_sound.ClipList[1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            AudioManager.Instance.PlayShotSE(_sound.ClipList[1]);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            // サウンド停止
+            AudioManager.Instance.Stop();
+        }
+        else if(Input.GetKeyDown(KeyCode.W))
+        {
+            AudioManager.Instance.Volume(0.5f);
         }
     }
 }

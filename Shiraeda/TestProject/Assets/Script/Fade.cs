@@ -4,59 +4,65 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Fade : MonoBehaviour
 {
+    private enum FADE_TYPE
+    {
+        IN,     // フェイドイン
+        OUT,    // フェイドアウト
+        LOOP,   // フェイドループ
+        MAX
+    };
     // フェイド用イメージ保存変数
-    Image _image;
-    Color _color;
+    private Image _image;
+    private Color _color;
     // RGB値
     float r, g, b;
     // アルファ値(0から1まで)
     float _alpha;
 
-    // フェイド速度(1秒単位)
+    // フェイド速度(フレーム単位)
     [SerializeField, Tooltip("フェイド速度(1フレーム単位)")]
-    float _FadeFlamTime = 5;
+    private float _FadeFlamTime = 5;
     // フェイドフラグtrueの状態がFadeOut,falseがFadeIn
-    [SerializeField, Tooltip("フェイドの状態フラグ : trueでFadeOut, falseでFadeIn")]
-    bool _isFade;
+    [SerializeField, Tooltip("フェイドの状態フラグ")]
+    private bool _isFade;
     // Start is called before the first frame update
     void Start()
     {
-        _isFade = true;
-        // フェイド用のイメージを取得
-        _image = GetComponent<Image>();
-        // 初期色を黒に指定
-        _color = _image.color;
-        // 透明度指定(不透明)
-        _alpha = 1;
+        _isFade = true;                     // 初期状態設定(FadeIn)
+        _image  = GetComponent<Image>();    // フェイドするイメージの取得
+        _color  = _image.color;             // 初期色を取得
+        _alpha  = 1;                        // 透明度指定(不透明)
     }
 
-    public void FadeIn()
+    private bool FadeIn()
     {
         Debug.Log("フェイドインスタート");
+        bool retFlag = false;
         _alpha -= Time.deltaTime;
         _image.enabled = true;
         SetAlpha();
         // 透明度が0以下なら
         if (_alpha <= 0)
         {
-            _image.enabled = false;
-            _alpha = 0;
-            StopAllCoroutines();
+            _alpha = 0;                 // 透明度を0に設定
+            _image.enabled = false;     // キャンバスを非有効化
+            StopAllCoroutines();        // 全てのコルーチンをストップ
+            retFlag = true;             // フェイド完了を意味するtrueに
         }
+        return retFlag;
     }
 
-    public void FadeOut()
+    private bool FadeOut()
     {
-        Debug.Log("フェイドアウトスタート");
-        _alpha += Time.deltaTime;
-        _image.enabled = true;
+        Debug.Log("アウトループ");
+        _alpha += Time.deltaTime;       // alpha値を加算
         // アルファ値が不透明の255を超えているなら
         if (_alpha >= 1)
         {
             _alpha = 1;
             StopAllCoroutines();
-            SceneCtl.Instance.MoveScene(SceneCtl.SCENE.GAME);
         }
+        return false;
     }
 
     private void SetAlpha()
@@ -69,10 +75,6 @@ public class Fade : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            // フェイドの状態を変更(テストコード)
-            _isFade = _isFade == true ? false : true;
-
-            Debug.Log("Fキーが押された");
             StartCoroutine(FadeStart());
         }
     }
@@ -80,20 +82,21 @@ public class Fade : MonoBehaviour
     IEnumerator FadeStart()
     {
         Debug.Log("コルーチンの開始");
+        _image.enabled = true;                      // イメージの有効化
+        _isFade = _isFade == true ? false : true;   // フェイドの状態を変更
 
-        // 無限ループを開始する
+        // ループを開始する
         while (true)
         {
-            Debug.Log("コルーチンループ中");
             if (_isFade)
             {
-                FadeOut();
+                FadeOut();  // フェイドアウト
             }
             else
             {
-                FadeIn();
+                FadeIn();   // フェイドイン
             }
-            // アルファ値を反映させる
+            // alpha値を反映させる
             SetAlpha();
             yield return null;
         }

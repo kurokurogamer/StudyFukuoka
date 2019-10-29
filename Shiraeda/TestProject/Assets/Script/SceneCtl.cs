@@ -10,11 +10,10 @@ public class SceneCtl : MonoBehaviour
         TITEL,
         GAME,
         RESULT,
-        SAMPLE,
         MAX
     }
+
     private static SceneCtl instance = null;
-    string _sceneName;
     public static SceneCtl Instance
     {
         get
@@ -22,12 +21,18 @@ public class SceneCtl : MonoBehaviour
             if (instance == null)
             {
                 GameObject obj = new GameObject();
-                obj.name = "AudioManager";
+                obj.name = "SceneManager";
                 instance = obj.AddComponent<SceneCtl>();
             }
             return instance;
         }
     }
+    // nextシーンの列挙型保存変数
+    [SerializeField]
+    private SCENE _nextScene = SCENE.MAX;
+    // シーン名保存変数
+    private string _sceneName;
+
     private void Awake()
     {
         if(instance == null)
@@ -40,6 +45,7 @@ public class SceneCtl : MonoBehaviour
         }
         DontDestroyOnLoad(this);
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,13 +53,14 @@ public class SceneCtl : MonoBehaviour
         _sceneName = SceneManager.GetActiveScene().name;
     }
 
-    public void MoveScene()
+    public void NextScene()
     {
-        SceneManager.LoadScene("GameScene");
+        NextScene(_nextScene);
     }
 
-    public void MoveScene(SCENE type)
+    public void NextScene(SCENE type)
     {
+        // 列挙の中身をみて、指定されたSceneに遷移する
         switch (type)
         {
             case SCENE.TITEL:
@@ -65,23 +72,27 @@ public class SceneCtl : MonoBehaviour
             case SCENE.RESULT:
                 _sceneName = "ResultScene";
                 break;
-            case SCENE.SAMPLE:
-                _sceneName = "SampleScene";
-                break;
             case SCENE.MAX:
             default:
                 _sceneName = "";
                 break;
         }
-        SceneManager.LoadScene(_sceneName);
-        /// 使い方
-        ///SceneCtl.Instance.MoveScene(SceneCtl.SCENE.GAME);
+        // シーンの名前が指定されているなら
+        if (_sceneName != "")
+        {
+            SceneManager.LoadScene(_sceneName);
+        }
     }
 
-    private void CheckScene()
+    private void GetScene()
     {
         // ActiveなSceneの名前を取得
         _sceneName = SceneManager.GetActiveScene().name;
+    }
+
+    public void PauseScene(bool pause)
+    {
+        GetScene();
     }
 
     // Update is called once per frame

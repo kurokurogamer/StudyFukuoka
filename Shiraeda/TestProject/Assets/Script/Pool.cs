@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Pool : MonoBehaviour
 {
-    // 初期のプールの数
+    // 初期プール数
     [SerializeField, Tooltip("初期プール数")]
-    int _firstCnt = 50;
-    // プールリスト 
+    int _firstCnt = 10;
+    // オブジェクトプールリスト 
     static public List<GameObject> _poolList = new List<GameObject>();
     // Start is called before the first frame update
     void Start()

@@ -71,7 +71,7 @@ public class Effect : Pool
         Create(id, pos, _CreateList[id].transform.rotation, loop);
     }
     // パーティクルを生成(座標・回転角度指定)
-    public void Create(int id, Vector3 pos, Quaternion rot, bool loop = false, bool pool = false)
+    public void Create(int id, Vector3 pos, Quaternion rot, bool loop = false, bool autoStop = false)
     {
         if (id >= _CreateList.Count)
         {
@@ -82,12 +82,18 @@ public class Effect : Pool
         // エフェクトにあるパーティクルシステムを取得
         ParticleSystem particle = effect.GetComponent<ParticleSystem>();
         // 別のプレハブを間違って生成してないなら
-        if(particle)
+        if (particle)
         {
             // 直接値が変えられないので別の変数に入れる
             var main = particle.main;
-            // メインからループにアクセスし設定する
+            // ループの設定を変更する
             main.loop = loop;
+            if (autoStop)
+            {
+                // パーティクルの再生時間で停止をかける
+                StartCoroutine(StopEffect(main.duration, particle));
+            }
+
         }
         // 子オブジェクトにするかどうか
         if(_childFlag)
@@ -95,12 +101,28 @@ public class Effect : Pool
             effect.transform.parent = transform;
         }
     }
+    IEnumerator StopEffect(float secondTime, ParticleSystem particle)
+    {
 
-    public void CreatePool(int id, Vector3 pos, Quaternion rot, bool loop = false, bool pool = false)
+        yield return null;
+    }
+
+    // プールされたオブジェクトからパーティクルを生成
+    public GameObject CreatePool(int id, bool loop = false)
+    {
+        return CreatePool(id, transform.position, _CreateList[id].transform.rotation, loop);
+    }
+    // プールオブジェクトからパーティクルを生成
+    public GameObject CreatePool(int id, Vector3 pos, bool loop = false)
+    {
+        return CreatePool(id, pos, _CreateList[id].transform.rotation, loop);
+    }
+
+    public GameObject CreatePool(int id, Vector3 pos, Quaternion rot, bool loop = false)
     {
         if(id >= _CreateList.Count)
         {
-            return;
+            return null;
         }
         // エフェクトを生成
         GameObject effect = CheckPool(_CreateList[id]);
@@ -133,6 +155,8 @@ public class Effect : Pool
         {
             effect.transform.parent = transform;
         }
+
+        return effect;
     }
 
     // Update is called once per frame
