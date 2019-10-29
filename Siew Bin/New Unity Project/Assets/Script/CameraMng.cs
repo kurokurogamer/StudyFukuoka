@@ -26,10 +26,6 @@ public class CameraMng : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < scope.transform.childCount; i++)
-        {
-            scope.transform.GetChild(i).gameObject.SetActive(false);
-        }
         dist = transform.position - player.transform.position;
         FPSFlag = false;
     }
@@ -40,8 +36,45 @@ public class CameraMng : MonoBehaviour
         playerOffset = new Vector3(player.transform.position.x,
             player.transform.position.y + 1.5f,
             player.transform.position.z + 0.2f);
-        //FirstPersonView();
-        ThirdPersonView();
+        if (Input.GetKeyDown("t"))
+        {
+            FPSFlag = !FPSFlag;
+        }
+        if (FPSFlag == true)
+        {
+            scope.gameObject.SetActive(true);
+            FirstPersonView();
+        }
+        else
+        {
+            if(zoomFlag)
+            {
+                Zoom();
+            }
+            scope.gameObject.SetActive(false);
+            ThirdPersonView();
+        }
+        if (Input.GetKeyDown("r"))
+        {
+            lockOnFlag = !lockOnFlag;
+            LockOn();
+            if (!lockOnFlag)
+            {
+                pitch = transform.eulerAngles.x;
+                yaw = transform.eulerAngles.y;
+            }
+        }
+        if (lockOnFlag)
+        {
+            if (FPSFlag == true)
+            {
+                transform.LookAt(lockedTarget.transform);
+            }
+            
+            Vector3 targetTransform = lockedTarget.transform.position;
+            targetTransform.y = player.transform.position.y;
+            player.transform.LookAt(targetTransform);
+        }
     }
 
     private void LateUpdate()
@@ -87,20 +120,7 @@ public class CameraMng : MonoBehaviour
 
         CheckWall();
 
-        if (Input.GetKeyDown("r"))
-        {
-            lockOnFlag = !lockOnFlag;
-            LockOn();
-            if (!lockOnFlag)
-            {
-                pitch = transform.eulerAngles.x;
-                yaw = transform.eulerAngles.y;
-            }
-        }
-        if (lockOnFlag)
-        {
-            player.transform.LookAt(lockedTarget.transform);
-        }
+        
 
     }
     void Zoom()
