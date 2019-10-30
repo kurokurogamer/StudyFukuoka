@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [HideInInspector]
     private static AudioManager instance;
     // オーディオソース
     [SerializeField]

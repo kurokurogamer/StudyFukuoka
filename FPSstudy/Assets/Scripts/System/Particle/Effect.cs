@@ -16,7 +16,6 @@ public class Effect : Pool
     // Start is called before the first frame update
     void Start()
     {
-        Init();
         // 子オブジェクトのパーティクルシステムを取得
         foreach(Transform child in transform)
         {
@@ -39,6 +38,10 @@ public class Effect : Pool
 
     public void Play(int id)
     {
+        if (id >= _particlesList.Count)
+        {
+            return;
+        }
         // 指定されたパーティクルを再生
         _particlesList[id].Play();
     }
@@ -54,6 +57,10 @@ public class Effect : Pool
 
     public void Stop(int id)
     {
+        if (id >= _particlesList.Count)
+        {
+            return;
+        }
         // 指定されたパーティクルを停止
         _particlesList[id].Stop();
     }
@@ -61,12 +68,20 @@ public class Effect : Pool
     // パーティクルを生成(通常呼び出し)
     public void Create(int id, bool loop = false)
     {
+        if (id >= _CreateList.Count)
+        {
+            return;
+        }
         // 自身の座標にパーティクルを生成する
         Create(id, transform.position, _CreateList[id].transform.rotation, loop);
     }
     // パーティクルを生成(座標指定)
     public void Create(int id, Vector3 pos, bool loop = false)
     {
+        if (id >= _CreateList.Count)
+        {
+            return;
+        }
         // 指定された座標にパーティクルを生成する
         Create(id, pos, _CreateList[id].transform.rotation, loop);
     }
@@ -79,6 +94,7 @@ public class Effect : Pool
         }
         // エフェクトを生成
         GameObject effect = Instantiate(_CreateList[id], pos, rot);
+        effect.name = _CreateList[id].name;
         // エフェクトにあるパーティクルシステムを取得
         ParticleSystem particle = effect.GetComponent<ParticleSystem>();
         // 別のプレハブを間違って生成してないなら
@@ -115,6 +131,10 @@ public class Effect : Pool
     // プールオブジェクトからパーティクルを生成
     public GameObject CreatePool(int id, Vector3 pos, bool loop = false)
     {
+        if (id >= _CreateList.Count)
+        {
+            return null;
+        }
         return CreatePool(id, pos, _CreateList[id].transform.rotation, loop);
     }
 

@@ -12,8 +12,8 @@ public class SceneCtl : MonoBehaviour
         RESULT,
         MAX
     }
-
-    private static SceneCtl instance = null;
+    [HideInInspector]
+    public static SceneCtl instance = null;
     public static SceneCtl Instance
     {
         get

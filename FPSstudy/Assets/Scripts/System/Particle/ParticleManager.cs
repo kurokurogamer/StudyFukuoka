@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ParticleManager : Pool
 {
-    private ParticleManager instance;
+    [HideInInspector]
+    public ParticleManager instance;
 
     public ParticleManager Instance
     {
@@ -30,6 +31,7 @@ public class ParticleManager : Pool
         {
             Destroy(instance);
         }
+        Init();
     }
 
     // Start is called before the first frame update
@@ -38,6 +40,10 @@ public class ParticleManager : Pool
         
     }
 
+    public GameObject Create()
+    {
+        return null;
+    }
     
 
     // Update is called once per frame

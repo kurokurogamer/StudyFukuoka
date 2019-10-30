@@ -9,6 +9,7 @@ public class Pool : MonoBehaviour
     int _firstCnt = 10;
     // オブジェクトプールリスト 
     static public List<GameObject> _poolList = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +17,15 @@ public class Pool : MonoBehaviour
 
     public void Init()
     {
+        //var obj = new GameObject();
+        //obj.name = "PoolList";
         for (int i = 0; i < _firstCnt; i++)
         {
-            var obj = new GameObject();
-            obj.SetActive(false);
-            _poolList.Add(obj);
+            var pool = new GameObject();
+            pool.name = "PoolObj";
+            //pool.transform.parent = obj.transform;
+            pool.SetActive(false);
+            _poolList.Add(pool);
         }
     }
 
