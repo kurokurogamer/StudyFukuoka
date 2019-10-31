@@ -8,7 +8,7 @@ public class SceneCtl : MonoBehaviour
     public enum SCENE
     {
         TITEL,
-        GAME,
+        MAP1,
         RESULT,
         MAX
     }
@@ -65,12 +65,15 @@ public class SceneCtl : MonoBehaviour
         {
             case SCENE.TITEL:
                 _sceneName = "TitleScene";
+                _nextScene = SCENE.MAP1;
                 break;
-            case SCENE.GAME:
-                _sceneName = "GameScene";
+            case SCENE.MAP1:
+                _sceneName = "Map_v1";
+                _nextScene = SCENE.RESULT;
                 break;
             case SCENE.RESULT:
                 _sceneName = "ResultScene";
+                _nextScene = SCENE.TITEL;
                 break;
             case SCENE.MAX:
             default:

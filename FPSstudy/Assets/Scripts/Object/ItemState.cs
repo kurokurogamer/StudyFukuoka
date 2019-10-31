@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class ItemState : MonoBehaviour
 {
     // 初期座標
     private Vector3 _fristPos;
