@@ -53,6 +53,10 @@ public class PlayerMng : MonoBehaviour
         {
             GetComponent<Animator>().SetBool("Jump", true);
         }
+        if (Input.GetKeyDown("p"))
+        {
+            GetComponent<Animator>().SetTrigger("Damaged");
+        }
 
     }
 
