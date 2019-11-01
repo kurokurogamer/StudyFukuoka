@@ -30,11 +30,19 @@ public class Gun : MonoBehaviour
 
     private Vector3 defaultPosition;
 
+    [SerializeField]
+    private Transform playerTransform;
+    private Vector3 playerOffset;
+
     void Start()
     {
         muzzleFlash = transform.Find("muzzleFlash").GetComponent<ParticleSystem>();
         currentAmmo = maxAmmo;
-        defaultPosition = transform.position;
+
+        defaultPosition = playerTransform.position;
+        playerOffset = new Vector3(0.2f,
+             1.0f,
+              0.2f);
     }
 
     void OnEnable()
@@ -46,7 +54,9 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isReloading)
+        defaultPosition = playerTransform.position + playerOffset;
+
+        if (isReloading)
         {
             return;
         }
