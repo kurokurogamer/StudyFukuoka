@@ -86,7 +86,7 @@ public class Gun : MonoBehaviour
 
         Vector3 RecoilPosition = new Vector3(defaultPosition.x, defaultPosition.y, defaultPosition.z - 0.5f);
 
-        transform.position = Vector3.Lerp(defaultPosition, RecoilPosition, recoil);
+        transform.position = Vector3.Lerp(transform.position, RecoilPosition, recoil);
         recoil -= Time.deltaTime;
         recoil = Mathf.Clamp(recoil, 0, 1f);
     }
@@ -101,6 +101,10 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range)) 
         {
             Debug.Log(hit.transform.name);
+            if(hit.transform.tag == "Enemy")
+            {
+                Destroy(hit.transform.gameObject);
+            }
         }
     }
 
@@ -117,5 +121,20 @@ public class Gun : MonoBehaviour
 
         currentAmmo = maxAmmo;
         isReloading = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(cam.transform.position, cam.transform.forward * hit.distance);
+        }
+        else
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(cam.transform.position, cam.transform.forward * range);
+        }
     }
 }

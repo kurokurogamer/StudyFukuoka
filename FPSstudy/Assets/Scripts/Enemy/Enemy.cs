@@ -19,6 +19,21 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public EnemySpawner es;
     private Rigidbody rb;
+    [SerializeField]
+    private GameObject item;
+    public GameObject Item
+    {
+        get { return item; }
+        set { item = value; }
+    }
+
+    private void OnDestroy()
+    {
+        if(item != null)
+        {
+            Instantiate(item, transform.position, transform.rotation);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
