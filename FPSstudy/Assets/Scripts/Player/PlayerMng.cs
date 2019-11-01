@@ -27,7 +27,7 @@ public class PlayerMng : MonoBehaviour
     void Update()
     {
         IsMoving = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         if (camera.GetFPSflag())
         {
             FPSMovement();

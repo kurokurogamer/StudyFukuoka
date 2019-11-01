@@ -6,11 +6,19 @@ public class TestButton : MonoBehaviour
 {
     private Effect effect;
     private Sound _sound;
+    [SerializeField]
+    private GameObject obj;
+    [SerializeField]
+    private ParticleSystem ef;
     // Start is called before the first frame update
     void Start()
     {
         effect = GetComponent<Effect>();
         _sound = GetComponent<Sound>();
+        var test1 = Instantiate(obj);
+        test1.name = "test1";
+        var test2 = Instantiate(ef);
+        test2.name = "test2";
     }
 
     // Update is called once per frame

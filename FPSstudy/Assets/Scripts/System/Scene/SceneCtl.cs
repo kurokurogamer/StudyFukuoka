@@ -12,6 +12,7 @@ public class SceneCtl : MonoBehaviour
         RESULT,
         MAX
     }
+    
     [HideInInspector]
     public static SceneCtl instance = null;
     public static SceneCtl Instance
@@ -41,7 +42,7 @@ public class SceneCtl : MonoBehaviour
         }
         else
         {
-            Destroy(instance);
+            Destroy(this);
         }
         DontDestroyOnLoad(this);
     }
@@ -84,6 +85,7 @@ public class SceneCtl : MonoBehaviour
         if (_sceneName != "")
         {
             SceneManager.LoadScene(_sceneName);
+            Time.timeScale = 0;
         }
     }
 

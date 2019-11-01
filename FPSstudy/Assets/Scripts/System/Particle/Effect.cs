@@ -20,6 +20,8 @@ public class Effect : Pool
         foreach(Transform child in transform)
         {
             ParticleSystem particle = child.GetComponent<ParticleSystem>();
+            Instantiate(particle);
+            particle.Play();
             if(particle)
             {
                 _particlesList.Add(particle);

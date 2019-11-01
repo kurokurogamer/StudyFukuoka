@@ -20,6 +20,11 @@ public class UI : MonoBehaviour
         }
     }
 
+    public void ClickNext()
+    {
+        SceneCtl.Instance.NextScene();
+    }
+
     // Update is called once per frame
     void Update()
     {

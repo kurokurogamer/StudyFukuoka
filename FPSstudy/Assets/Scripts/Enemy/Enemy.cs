@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     public EnemySpawner es;
     private Rigidbody rb;
     [SerializeField]
-    private GameObject item;
+    public GameObject item;
     public GameObject Item
     {
         get { return item; }
