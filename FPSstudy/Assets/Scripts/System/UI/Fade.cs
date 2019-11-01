@@ -25,6 +25,7 @@ public class Fade : MonoBehaviour
     // フェイドフラグtrueの状態がFadeOut,falseがFadeIn
     [SerializeField, Tooltip("フェイドの状態フラグ")]
     private bool _isFade;
+    private bool _isNext;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +33,7 @@ public class Fade : MonoBehaviour
         _image  = GetComponent<Image>();    // フェイドするイメージの取得
         _color  = _image.color;             // 初期色を取得
         _alpha  = 1;                        // 透明度指定(不透明)
+        _isNext = false;
     }
 
     private bool FadeIn()
@@ -61,8 +63,17 @@ public class Fade : MonoBehaviour
         {
             _alpha = 1;
             StopAllCoroutines();
+            if (_isNext)
+            {
+                NextScene();
+            }
         }
         return false;
+    }
+
+    public void NextScene()
+    {
+        SceneCtl.Instance.NextScene();
     }
 
     private void SetAlpha()
@@ -75,6 +86,7 @@ public class Fade : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            _isNext = true;
             StartCoroutine(FadeStart());
         }
     }

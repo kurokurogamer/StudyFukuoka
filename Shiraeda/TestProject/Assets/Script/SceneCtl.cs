@@ -43,7 +43,7 @@ public class SceneCtl : MonoBehaviour
         {
             Destroy(instance);
         }
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
