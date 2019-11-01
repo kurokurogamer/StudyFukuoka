@@ -13,12 +13,14 @@ public class PlayerMng : MonoBehaviour
     [SerializeField]
     private LineRenderer lineR;
     private RaycastHit sightLine;
-    
+    private float laserDist = 50.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+       
         lineR = GetComponent<LineRenderer>();
+        //lineR.SetColors(Color.red, Color.red);
         rb = GetComponent<Rigidbody>();
         distToGround = GetComponent<Collider>().bounds.extents.y;
     }
@@ -136,11 +138,20 @@ public class PlayerMng : MonoBehaviour
         {
             transform.localPosition += transform.TransformDirection(0.0f, 0.0f, 0.1f);
         }
-        //lineR.SetPosition(0, transform.position);
-        //if(Physics.Raycast(transform.position,transform.forward,out sightLine,Mathf.Infinity))
-        //{
-        //    lineR.SetPosition(1, sightLine.point);
-        //}
+        var offset = new Vector3(0f, 0.8f);
+
+        lineR.SetPosition(0, transform.position + offset);
+        Ray ray = new Ray(transform.position + offset, transform.forward);
+        if (Physics.Raycast(ray, out sightLine, Mathf.Infinity))
+        {
+            lineR.SetPosition(1, sightLine.point);
+        }
+        else
+        {
+            lineR.SetPosition(1, transform.position + offset + (transform.forward * laserDist));
+
+        }
+        //Debug.DrawRay(ray.origin, sightLine.point, Color.white, 0.1f);
     }
 
     void SetSpeed(float val)

@@ -43,6 +43,7 @@ public class CameraMng : MonoBehaviour
         if (FPSFlag == true)
         {
             scope.gameObject.SetActive(true);
+            transform.rotation = player.transform.rotation;
             FirstPersonView();
         }
         else
@@ -52,6 +53,7 @@ public class CameraMng : MonoBehaviour
                 Zoom();
             }
             scope.gameObject.SetActive(false);
+            transform.rotation = player.transform.rotation;
             ThirdPersonView();
         }
         if (Input.GetKeyDown("r"))
@@ -85,7 +87,7 @@ public class CameraMng : MonoBehaviour
 
     void FirstPersonView()
     {
-        //this.GetComponent<Camera>().cullingMask = 0xffff0f;
+        this.GetComponent<Camera>().cullingMask = 0xffff0f;
 
         yaw += hSpeed * Input.GetAxis("Mouse X");
         pitch -= vSpeed * Input.GetAxis("Mouse Y");
@@ -111,7 +113,7 @@ public class CameraMng : MonoBehaviour
     void ThirdPersonView()
     {
 
-        //this.GetComponent<Camera>().cullingMask = 0xffffff;
+        this.GetComponent<Camera>().cullingMask = 0xffffff;
 
         dist =  Quaternion.AngleAxis(Input.GetAxis("Mouse X") * 4.0f, Vector3.up) * dist;
 
@@ -130,7 +132,7 @@ public class CameraMng : MonoBehaviour
             scope.transform.GetChild(i).gameObject.SetActive(!scope.transform.GetChild(i).gameObject.activeSelf);
         }
         //scope.SetActive(!scope.activeSelf);
-        //this.GetComponent<Camera>().fieldOfView += zoomFlag? 55.0f : -55.0f;
+        this.GetComponent<Camera>().fieldOfView += zoomFlag ? 55.0f : -55.0f;
         zoomFlag = !zoomFlag;
     }
 
