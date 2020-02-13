@@ -37,7 +37,7 @@ public class DebugGizmos : MonoBehaviour
         // デバックモード
         if (_mode == GIZMOSE_MODE.CUBE)
         {
-            Gizmos.DrawCube(Vector3.zero, Vector3.one *_size);
+            Gizmos.DrawCube(Vector3.zero, Vector3.one);
         }
         else if (_mode == GIZMOSE_MODE.SPHERE)
         {
